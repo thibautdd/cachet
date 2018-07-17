@@ -1,0 +1,32 @@
+version: "3"
+
+services:
+  mysql:
+    image: mysql:5.7
+    environment:
+      - MYSQL_ROOT_PASSWORD=mysql
+      - MYSQL_USER=mysql
+      - MYSQL_PASSWORD=mysql
+      - MYSQL_DATABASE=mysql
+      - DEBUG=false
+  cachet:
+    image: docker_cachet
+    ports:
+      - 80:8000
+    links:
+      - mysql:mysql
+    environment:
+      - DB_DRIVER=mysql
+      - DB_HOST=mysql
+      - DB_DATABASE=mysql
+      - DB_USERNAME=mysql
+      - DB_PASSWORD=mysql
+      - DB_PREFIX=chq_
+      - APP_KEY=${APP_KEY:-null}
+    depends_on:
+      - mysql
+
+networks:
+  default:
+    external:
+      name: docker_default
